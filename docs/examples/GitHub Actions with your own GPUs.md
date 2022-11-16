@@ -19,7 +19,7 @@ In automation of whole process [Cirun.io](https://cirun.io/) provides a solution
 
 ## Example overview
 
-As ML operations are better to be done on GPUs. As ML models used too much mathematical algorithms. GPUs are designed to solve the complex mathematics in effective way. So, whenever we do ML operations on GPUs, it will be done in an effective manner and also minimize the computing time complexity.
+ML operations are better to be done on GPUs. As ML models used too much mathematical algorithms. GPUs are designed to solve the complex mathematics in effective way. So, whenever we do ML operations on GPUs, it will be done in an effective manner and also minimize the computing time complexity.
 
 This article uses an example workflow to demonstrate how to use GPUs to do ML operations using [Cirun.io](https://cirun.io/). When this workflow is triggered, it automatically runs a script that creates a self-hosted runner on AWS with GPU and do ML operations on it.
 
