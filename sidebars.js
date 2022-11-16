@@ -48,6 +48,14 @@ module.exports = {
       ],
     },
     {
+      type: "category",
+      label: "Examples",
+      link: { type: "doc", id: "examples/index" },
+      items: [
+        "examples/actions_with_gpu"
+      ],
+    },
+    {
       type: "doc",
       label: "Privacy",
       id: "privacy-policy",
