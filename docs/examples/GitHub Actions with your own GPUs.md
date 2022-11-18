@@ -31,17 +31,17 @@ This article uses an example workflow to demonstrate how to use GPUs to do ML op
 - We need to configure CML- [Continous machine learning](https://github.com/iterative/cml#getting-started) with repository to setup the enviornment for training.
 - CML come preinstalled in Docker Images.
 - To setup CML with GitHub actions use docker container.
-```
-docker://dvcorg/cml-py3:latest
+```yml
+"docker://dvcorg/cml-py3:latest"
 ```
 - We don't need any other container argument for CPU.
 - To setup CML with GPUs use container.
-```
-ghcr.io/iterative/cml:0-dvc2-base1-gpu
+```yml
+"ghcr.io/iterative/cml:0-dvc2-base1-gpu"
 ```
 - Also needs a container argument to configure container for all GPUs.
-```
---gpus all
+```yml
+"--gpus all"
 ```
 - We also have to pass our repository's [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) so, that authentication is done on behalf of GitHub Actions.
 - Then we have steps what ever we want to do with our Workflow.
