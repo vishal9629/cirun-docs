@@ -23,6 +23,7 @@ ML operations are better to be done on GPUs. As ML models used too much mathemat
 
 This article uses an example workflow to demonstrate how to use GPUs to do ML operations using [Cirun.io](https://cirun.io/). When this workflow is triggered, it automatically runs a script that creates a self-hosted runner on AWS with GPU and do ML operations on it.
 
+- You can see the Time complexity difference in CPU and GPU [here](https://github.com/vishal9629/MLops_with_Cirun/actions/runs/3452191297)
 
 ## Things must have in GitHub Actions workflow to work with MLOps.
 
