@@ -93,20 +93,21 @@ CPU_GPU_matrix: # Creating matrix for jobs.
 ```
 - Added matrix strategy which enables us to create multiple job runs that are based on the matrix variables. In this example we are creating a matrix that provides multiple combination of os, docker containers and container arguments. These combinations are responsible for to create jobs for CPU and GPU individually using a single workflow. For more info see [matrix](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs).
 - Docker container comes with pre-installed dependencies which are important for full-stack data science.
-- To setup CML with CPU use container.
 ```yml
 "docker://dvcorg/cml-py3:latest"
 ```
+- To setup CML with CPU use container.
 - We don't need any other container argument for CPU.
 
-- To setup CML with GPUs use container.
 ```yml
 "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
 ```
-- Also needs a container argument to configure container for all GPUs.
+- To setup CML with GPUs use container.
+
 ```yml
 "--gpus all"
 ```
+- Also needs a container argument to configure container for all GPUs.
 
 ```yml
 exclude:
@@ -119,7 +120,7 @@ exclude:
           - os: "self-hosted"
             container_arg: " "
 ```
-Excluding the unwanted docker container and container_arg from our respective OS. An excluded configuration only has to be a partial match for it to be excluded.
+- Excluding the unwanted docker container and container_arg from our respective OS. An excluded configuration only has to be a partial match for it to be excluded.
 
 ```yml
 runs-on: "${{ matrix.os }}" 
@@ -127,20 +128,20 @@ container:
       image: "${{ matrix.containers }}"
       options: "${{ matrix.container_arg }}"
 ```
-Here we are Dynamic pass the os, containers, container_agr using matrix. You can have more info [here](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container).
+- Here we are Dynamic pass the os, containers, container_agr using matrix. You can have more info [here](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container).
 
 ```yml
 - name: "MLops"
         env:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
 ```
-This is very important to pass the GITHUB_TOKEN to have a working workflow. So, that authentication is done on behalf of GitHub Actions. You can have look to [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+- This is very important to pass the GITHUB_TOKEN to have a working workflow. So, that authentication is done on behalf of GitHub Actions. You can have look to [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 ```yml
 run: |
       "python train.py"
 ```
-This is our final run command to have our MLOps is to be running on the runner.
+- This is our final run command to have our MLOps is to be running on the runner.
 
 ## Configuration of GPU on self-hosted runner using Cirun
 
