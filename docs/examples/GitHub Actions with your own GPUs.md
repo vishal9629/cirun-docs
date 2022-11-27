@@ -81,7 +81,7 @@ jobs:
 ```
 
 ### Understanding the example
-
+- For understanding GitHub Actions you can refer [Actions](https://docs.github.com/en/actions).
 ```yml
 CPU_GPU_matrix: # Creating matrix for jobs.
     strategy:
