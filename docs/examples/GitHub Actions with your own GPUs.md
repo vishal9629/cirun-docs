@@ -22,12 +22,13 @@ ML operations are better to be done on GPUs. As ML models uses too many mathemat
 
 This example uses an example workflow to demonstrate how to use GPUs to do ML operations using [Cirun.io](https://cirun.io/). When this workflow is triggered, it automatically runs a script that creates a self-hosted runner on AWS with GPU and does ML operations on it.
 
-- You can see the Time complexity difference in CPU and GPU [here](https://github.com/vishal9629/MLops_with_Cirun/actions/runs/3452191297/usage)
+- **You can see the Time complexity difference in CPU and GPU [here](https://github.com/vishal9629/MLops_with_Cirun/actions/runs/3452191297/usage)**
 
 
 ## MLOps using Cirun
 
-When we do Machine Learning Operations ([MLOps](https://ml-ops.org/)). We want continuous delivery, testing and other operations of your Model. **[CML](https://github.com/iterative/cml#getting-started)**, an open-source CLI tool for implementing continuous integration and delivery (CI/CD) with a focus on MLOps. Model training, model evaluation, monitoring datasets, and machine provisioning are all included in CML, which is used to automate development workflows. CML uses custom Docker images that come pre-installed libraries that are essential for MLOps like NodeJS, Python, DVC (Data Version Control) and CML set up on an Ubuntu LTS. MLOps can be automated using the **[GitHub Actions](https://docs.github.com/en/actions)** that is a CI/CD platform.
+When we do Machine Learning Operations ([MLOps](https://ml-ops.org/)). We want continuous delivery, testing and other operations of your Model. **[CML](https://github.com/iterative/cml#getting-started)**, an open-source CLI tool for implementing CI/CD with a focus on MLOps. Model training, model evaluation, monitoring datasets, and machine provisioning are all included in CML, which is used to automate development workflows.
+CML uses custom Docker images that come pre-installed libraries that are essential for MLOps like NodeJS, Python, DVC (Data Version Control) and CML set up on an Ubuntu LTS. MLOps can be automated using the **[GitHub Actions](https://docs.github.com/en/actions)** that is a CI/CD platform.
 
 MLOps operates more efficiently on GPUs. Therefore, integrating GPUs is more beneficial if we automate the entire process.
 
@@ -35,114 +36,74 @@ In automation of whole process with GPUs [Cirun.io](https://cirun.io/) provides 
 
 ### Example workflow
 
-The following workflow was created to show how to do MLOps with Cirun. Here we are creating a comparison between MLOps using CPU and GPU. In this workflow we created jobs for two runners, one is for self-hosted using GPU and another one is for GitHub action runner using CPU. You can also reproduce this workflow for single runner by removing one **Runner Configuration** and **Matrix configuration**. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
+The following workflow was created to show how to do MLOps with Cirun. In this workflow we created job for runner, one is for self-hosted using GPU. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
+
+##### Also you can directly copy workflow yml. [MLOps using GPUs yml](https://github.com/vishal9629/MLops_with_Cirun/blob/new-example-2/.github/workflows/MLOps-gpu.yml)
 
 ```yml
-name: "GitHub Actions with your own GPUs"
+name: "MLops"
 on: 
   push:
     branches: [ "none" ] # When a push occurs on a branch workflow will trigger on your desired branch.
   workflow_dispatch: 
 jobs:
-  CPU_GPU_matrix: # Creating matrix for jobs.
-    strategy:
-      matrix:
-        # Creating a 2d matrix to execute our jobs with respective docker containers.
-        os: ["ubuntu-latest", "cirun.gpu"] 
-        containers: ["docker://dvcorg/cml-py3:latest" , "ghcr.io/iterative/cml:0-dvc2-base1-gpu" ]
-        container_arg: [" " , "--gpus all"]
-        # Excluding the unwanted docker container and container_arg in our respective OS.
-        exclude:
-          - os: "ubuntu-latest"
-            containers: "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
-          - os: "ubuntu-latest"
-            container_arg: "--gpus all"
-          - os: "cirun.gpu"
-            containers: "docker://dvcorg/cml-py3:latest"
-          - os: "cirun.gpu"
-            container_arg: " "
-    # Workflow to run commands in OS.
-    # Dynamic passing of os, containers, container_agr using matrix 
-    runs-on: "${{ matrix.os }}" 
-    container:
-      image: "${{ matrix.containers }}"
-      options: "${{ matrix.container_arg }}"
-    # Steps that we want to have with OS.
+  run:
+    runs-on: ["self-hosted", "cirun.gpu"] # specifying the os and label
+    container: # passing container to setup CML for MLOps
+      image: "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
+      options: "--gpus all" # configuration of gpu on container
     steps:
-      - uses: "actions/checkout@v3"
-      - name: "Dependency Install"
+      - uses: "actions/checkout@v3" # checking out the repository
+      - name: Get Free Memory
+        run: "free -h"
+      - name: Run NVIDIA-SMI
+        run: |
+          "echo Running nvidia-smi"
+          "nvidia-smi"
+      - name: Dependency Install # installing all the dependencies 
         run: "pip install -r requirements.txt"
       - name: "MLops"
-        env:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        env: # passing github auth token
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Your ML workflow goes here, you can pass your variable name
+          
+          # Your ML workflow goes here
           "python train.py"
 ```
-
-### Understanding the example
-- For understanding GitHub Actions you can refer [Actions](https://docs.github.com/en/actions).
-```yml
-CPU_GPU_matrix: # Creating matrix for jobs.
-    strategy:
-      matrix:
-        # Creating a 2d matrix to execute our jobs with respective docker containers.
-        os: ["ubuntu-latest", "self-hosted"] 
-        containers: ["docker://dvcorg/cml-py3:latest" , "ghcr.io/iterative/cml:0-dvc2-base1-gpu" ]
-        container_arg: [" " , "--gpus all"]
-```
-- Added matrix strategy which enables us to create multiple job runs that are based on the matrix variables. In this example we are creating a matrix that provides multiple combination of os, docker containers and container arguments. These combinations are responsible for to create jobs for CPU and GPU individually using a single workflow. For more info see [matrix](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs).
 - Docker container comes with pre-installed dependencies which are important for full-stack data science.
+#### To setup CML with CPU use container.
 ```yml
-"docker://dvcorg/cml-py3:latest"
+image: "docker://dvcorg/cml-py3:latest"
 ```
-- To setup CML with CPU use container.
-- We don't need any other container argument for CPU.
-
+#### To setup CML with GPUs use container.
 ```yml
-"ghcr.io/iterative/cml:0-dvc2-base1-gpu"
+image: "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
 ```
-- To setup CML with GPUs use container.
-
+- Followed by container argument.
 ```yml
 "--gpus all"
 ```
-- Also needs a container argument to configure container for all GPUs.
-
+- Here we are passing the os, containers, container_agr. You can have more info [here](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container).
 ```yml
-exclude:
-          - os: "ubuntu-latest"
-            containers: "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
-          - os: "ubuntu-latest"
-            container_arg: "--gpus all"
-          - os: "cirun.gpu"
-            containers: "docker://dvcorg/cml-py3:latest"
-          - os: "cirun.gpu"
-            container_arg: " "
+runs-on: ["self-hosted", "cirun.gpu"] # specifying the os and label
+    container: # passing container to setup CML for MLOps
+      image: "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
+      options: "--gpus all" # configuration of gpu on container
 ```
-- Excluding the unwanted docker container and container_arg from our respective OS. An excluded configuration only has to be a partial match for it to be excluded.
-
-```yml
-runs-on: "${{ matrix.os }}" 
-container:
-      image: "${{ matrix.containers }}"
-      options: "${{ matrix.container_arg }}"
-```
-- Here we are Dynamic pass the os, containers, container_agr using matrix. You can have more info [here](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container).
+- This is very important to pass the GITHUB_TOKEN to have a working workflow. So, that authentication is done on behalf of GitHub Actions. You can have look to [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 ```yml
 - name: "MLops"
         env:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
 ```
-- This is very important to pass the GITHUB_TOKEN to have a working workflow. So, that authentication is done on behalf of GitHub Actions. You can have look to [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+- This is our final run command to have our Model is to be run on the runner.
 
 ```yml
 run: |
       # Your ML workflow goes here, you can pass your variable name
       "python train.py"
 ```
-- This is our final run command to have our Model is to be run on the runner.
 
 ### Configuration of GPU on self-hosted runner using Cirun
 
@@ -153,3 +114,4 @@ To configure your GPUs using self-hosted runner see [Cirun Configuration](https:
 - [MLOps](https://ml-ops.org/)
 - [CML](https://cml.dev/)
 - [Example GitHub repository](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2)
+- [MLOps using GPUs yml](https://github.com/vishal9629/MLops_with_Cirun/blob/new-example-2/.github/workflows/MLOps-gpu.yml)
