@@ -37,6 +37,9 @@ In automation of whole process with GPUs [Cirun.io](https://cirun.io/) provides 
 
 The following workflow was created to show how to do MLOps with Cirun. Here we are creating a comparison between MLOps using CPU and GPU. In this workflow we created jobs for two runners, one is for self-hosted using GPU and another one is for GitHub action runner using CPU. You can also reproduce this workflow for single runner by removing one **Runner Configuration** and **Matrix configuration**. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
 
+##### Also you can directly copy single workflow yml. [MLOps using GPUs yml](https://github.com/vishal9629/MLops_with_Cirun/blob/new-example-2/.github/workflows/MLOps-gpu.yml)
+
+
 ```yml
 name: "GitHub Actions with your own GPUs"
 on: 
@@ -93,21 +96,19 @@ CPU_GPU_matrix: # Creating matrix for jobs.
 ```
 - Added matrix strategy which enables us to create multiple job runs that are based on the matrix variables. In this example we are creating a matrix that provides multiple combination of os, docker containers and container arguments. These combinations are responsible for to create jobs for CPU and GPU individually using a single workflow. For more info see [matrix](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs).
 - Docker container comes with pre-installed dependencies which are important for full-stack data science.
+#### To setup CML with CPU use container.
 ```yml
-"docker://dvcorg/cml-py3:latest"
+image: "docker://dvcorg/cml-py3:latest"
 ```
-- To setup CML with CPU use container.
-- We don't need any other container argument for CPU.
-
+#### To setup CML with GPUs use container.
 ```yml
-"ghcr.io/iterative/cml:0-dvc2-base1-gpu"
+image: "ghcr.io/iterative/cml:0-dvc2-base1-gpu"
 ```
-- To setup CML with GPUs use container.
-
+- Followed by container argument.
 ```yml
 "--gpus all"
 ```
-- Also needs a container argument to configure container for all GPUs.
+- Excluding the unwanted docker container and container_arg from our respective OS. An excluded configuration only has to be a partial match for it to be excluded.
 
 ```yml
 exclude:
@@ -120,7 +121,7 @@ exclude:
           - os: "cirun.gpu"
             container_arg: " "
 ```
-- Excluding the unwanted docker container and container_arg from our respective OS. An excluded configuration only has to be a partial match for it to be excluded.
+- Here we are Dynamic pass the os, containers, container_agr using matrix. You can have more info [here](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container).
 
 ```yml
 runs-on: "${{ matrix.os }}" 
@@ -128,22 +129,19 @@ container:
       image: "${{ matrix.containers }}"
       options: "${{ matrix.container_arg }}"
 ```
-- Here we are Dynamic pass the os, containers, container_agr using matrix. You can have more info [here](https://docs.github.com/en/actions/using-jobs/running-jobs-in-a-container).
-
+- This is very important to pass the GITHUB_TOKEN to have a working workflow. So, that authentication is done on behalf of GitHub Actions. You can have look to [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 ```yml
 - name: "MLops"
         env:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
 ```
-- This is very important to pass the GITHUB_TOKEN to have a working workflow. So, that authentication is done on behalf of GitHub Actions. You can have look to [GITHUB_TOKEN](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+- This is our final run command to have our Model is to be run on the runner.
 
 ```yml
 run: |
       # Your ML workflow goes here, you can pass your variable name
       "python train.py"
 ```
-- This is our final run command to have our Model is to be run on the runner.
-
 ### Configuration of GPU on self-hosted runner using Cirun
 
 To configure your GPUs using self-hosted runner see [Cirun Configuration](https://docs.cirun.io/reference/yaml#gpu-gpu).
@@ -153,3 +151,4 @@ To configure your GPUs using self-hosted runner see [Cirun Configuration](https:
 - [MLOps](https://ml-ops.org/)
 - [CML](https://cml.dev/)
 - [Example GitHub repository](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2)
+- [MLOps using GPUs yml](https://github.com/vishal9629/MLops_with_Cirun/blob/new-example-2/.github/workflows/MLOps-gpu.yml)
