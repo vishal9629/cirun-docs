@@ -27,7 +27,8 @@ This example uses an example workflow to demonstrate how to use GPUs to do ML op
 
 ## MLOps using Cirun
 
-When we do Machine Learning Operations ([MLOps](https://ml-ops.org/)). We want continuous delivery, testing and other operations of your Model. **[CML](https://github.com/iterative/cml#getting-started)**, an open-source CLI tool for implementing continuous integration and delivery (CI/CD) with a focus on MLOps. Model training, model evaluation, monitoring datasets, and machine provisioning are all included in CML, which is used to automate development workflows. CML uses custom Docker images that come pre-installed libraries that are essential for MLOps like NodeJS, Python, DVC (Data Version Control) and CML set up on an Ubuntu LTS. MLOps can be automated using the **[GitHub Actions](https://docs.github.com/en/actions)** that is a CI/CD platform.
+When we do Machine Learning Operations ([MLOps](https://ml-ops.org/)). We want continuous delivery, testing and other operations of your Model. **[CML](https://github.com/iterative/cml#getting-started)**, an open-source CLI tool for implementing CI/CD with a focus on MLOps. Model training, model evaluation, monitoring datasets, and machine provisioning are all included in CML, which is used to automate development workflows. 
+CML uses custom Docker images that come pre-installed libraries that are essential for MLOps like NodeJS, Python, DVC and CML set up on an Ubuntu LTS. MLOps can be automated using the **[GitHub Actions](https://docs.github.com/en/actions)** that is a CI/CD platform.
 
 MLOps operates more efficiently on GPUs. Therefore, integrating GPUs is more beneficial if we automate the entire process.
 
