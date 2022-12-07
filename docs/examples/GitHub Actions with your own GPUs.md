@@ -6,14 +6,26 @@ image: "https://cirun.io/cirun-summary-image-v4.png"
 keywords: [Cirun, Gcp, digitalocean, azure, Amazon web services, open stack, Authentication, Oracle]
 ---
 # GitHub Actions with your own GPUs
-
+Table of contents
+- [Outline](#outline)
+- [What are MLOps and it's uses?](#what-are-mlops-and-its-uses)
+- [Why MLOps are better on GPUs?](#why-mlops-are-better-on-gpus)
+- [How Cirun might help to do this?](#how-cirun-might-help-to-do-this)
+- [Getting Started](#getting-started) 
+  - [How to setup MLOps on CPU and GPU using Cirun.](#how-to-setup-mlops-on-cpu-and-gpu-using-cirunhttpsdocscirunioreferenceyamlrunners-runners)
+  - [Machines used for comparison.](#machines-used-for-comparison)
+- [Results](#results)
+  - [Comparison of time complexities.](#comparison-of-time-complexities)
+  - [How Cirun helped us to do this?](#how-cirun-helped-us-to-do-this)
+- [Example workflow](#example-workflow)
+- [References](#references)
 ## Outline
-In this example we are doing comparison of MLOps on CPU and GPU using Cirun. When working with Machine Learning Operations ([MLOps](https://ml-ops.org/)), we want continuous delivery and testing of your Model and its operations. MLOps can be automated using **[GitHub Actions](https://docs.github.com/en/actions)** that is a CI/CD platform, and it is way more fast when you use GPUs.
+In this example, we are doing a comparison of MLOps on CPU and GPU using Cirun. When working with Machine Learning Operations ([MLOps](https://ml-ops.org/)), we want continuous delivery and testing of our Model and its operations. We can automate MLOps using **[GitHub Actions](https://docs.github.com/en/actions)** which is a CI/CD platform, and it is way faster when we use GPUs.
 ## What are MLOps and it's uses?
-MLOps stands for Machine Learning Operations. It establishes a smooth connection from the creation of the ML models to the production. MLOps continues by concentrating on the upkeep and overall monitoring of Machine Learning Engineering. MLOps collaborate on every task carried out by data scientists, DevOps engineers, and ML engineers. MLOps are used to reduce friction with devops and IT, allows better cooperation with data teams, makes ML pipelines reproducible, and speeds up release velocity.
+MLOps stands for Machine Learning Operations. It establishes a smooth connection from the creation of the ML models to the production. MLOps continues by concentrating on the upkeep and overall monitoring of Machine Learning Engineering. MLOps collaborate on every task carried out by data scientists, DevOps engineers, and ML engineers. MLOps are used to reduce friction with DevOps and IT, allows better cooperation with data teams, make ML pipelines reproducible and speed up the process.
 
 ## Why MLOps are better on GPUs?
-GPUs are designed to do complex mathematical operations and GPUs have capabilities to process the data on multiple core parallelly.
+GPUs are designed to do complex mathematical operations and have capabilities to process the data on multiple core parallelly.
 As ML models uses too many mathematical algorithms and demands to train the different data on same code. So, whenever we do ML operations on GPUs, it will be done effectively and also minimize the computing time complexity.
 
 ## How Cirun might help to do this?
@@ -22,8 +34,8 @@ As ML models uses too many mathematical algorithms and demands to train the diff
 
 ## Getting Started 
 ### How to setup MLOps on CPU and GPU using [Cirun](https://docs.cirun.io/reference/yaml#runners-runners).
-- In this example we created a workflow for MLOps to be run on GitHub Actions machine having CPU and on Self-hosted runner having GPU.
-- For ML operations we have to make ML friendly environment. For this we used **[CML](https://github.com/iterative/cml#getting-started)**, an open-source CLI tool for implementing CI/CD with a focus on MLOps. CML uses custom Docker images that come pre-installed libraries that are essential for MLOps like NodeJS, Python, DVC (Data Version Control).
+- In this example, we created a workflow for MLOps to be run on a GitHub Actions machine having CPU and on a Self-hosted runner having GPU.
+- For ML operations we have to make ML friendly environment. For this we used **[CML](https://github.com/iterative/cml#getting-started)**, which is an open-source CLI tool for implementing CI/CD with a focus on MLOps. CML uses custom Docker images that come pre-installed libraries that are essential for MLOps like NodeJS, Python, DVC (Data Version Control).
 - To setup **[CML](https://github.com/iterative/cml#getting-started)** environment on CPU use docker container.
 ```yml
 image: "docker://dvcorg/cml-py3:latest"
@@ -45,7 +57,7 @@ options: "--gpus all"
 ```
 ### Machines used for comparison.
 #### For MLOps on CPU, we used [GitHub-hosted runners](https://docs.github.com/en/actions/using-github-hosted-runnersabout-github-hosted-runners#supported-runners-and-hardware-resources) which only provides CPUs to work with.
-Hardware configuration 
+Hardware configuration of GitHub Actions machine.
 - 2-core CPU (x86_64)
 - 7 GB of RAM
 - 14 GB of SSD space
@@ -55,7 +67,7 @@ In example we used AWS instance g4dn.xlarge to demonstrate MLOps on GPU.
 
 To configure GPUs using self-hosted runner see [Cirun Configuration](https://docs.cirun.io/reference/yaml#gpu-gpu).
 
-Hardware configuration of instance **g4dn.xlarge**
+Hardware configuration of instance **g4dn.xlarge**.
 - NVIDIA T4 GPU
 - 4-core CPU (x86_64)
 - 16 GB of RAM
@@ -63,8 +75,8 @@ Hardware configuration of instance **g4dn.xlarge**
 
 ## Results
 
-### Comparison results
-This example uses an example workflow to compare time complexities on CPU and GPU to do ML operations using [Cirun.io](https://cirun.io/). When this workflow is triggered, it automatically runs a script that creates runner on GitHub Actions and self-hosted runner on AWS with GPU and does ML operations on it.
+### Comparison of time complexities.
+This example uses a workflow to compare time complexities on CPU and GPU to do ML operations using [Cirun.io](https://cirun.io/). When this workflow is triggered, it automatically runs a script that creates a runner on GitHub Actions and a self-hosted runner on AWS with GPU and does ML operations on it.
 
 - **You can see the Time complexity difference in CPU and GPU [here](https://github.com/vishal9629/MLops_with_Cirun/actions/runs/3452191297/usage)**
 
@@ -74,11 +86,11 @@ In this image we can clearly choose between two.
 ### How Cirun helped us to do this?
 
 Cirun provides us with feature to create On-demand Self-Hosted Github Actions Runners with any configuration on our cloud. We also know that MLOps operates more efficiently on GPUs. Therefore, if we automate the entire process with GPUs is more beneficial.
-Using Cirun we created a machine on AWS with NVIDIA T4 GPU and perform our MLOps. As a result we can see the huge difference between complexities of MLOps using CPU and GPU.
+Using Cirun we created a machine on AWS with NVIDIA T4 GPU and performed our MLOps. As a result we can see the huge difference between time complexities of MLOps using CPU and GPU.
 
 ## Example workflow
 
-Here we are doing a comparison between MLOps using CPU and GPU. In this workflow we created jobs for two runners, one is for self-hosted using GPU and another one is for GitHub action runner using CPU. we can also reproduce this workflow for single runner by removing one **Runner Configuration** and **Matrix configuration**. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
+This workflow created jobs for two runners, one is for self-hosted using GPU and another one is for GitHub action runner using CPU. we can also reproduce this workflow for a single runner by removing one **Runner Configuration** and **Matrix configuration**. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
 
 ##### Also you can directly copy single workflow yml. [MLOps using GPUs yml](https://github.com/vishal9629/MLops_with_Cirun/blob/new-example-2/.github/workflows/MLOps-gpu.yml)
 
