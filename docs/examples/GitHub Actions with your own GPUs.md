@@ -9,7 +9,7 @@ keywords: [Cirun, Gcp, digitalocean, azure, Amazon web services, open stack, Aut
 
 ## Outline
 In this example we are doing comparison of MLOps on CPU and GPU using Cirun. When working with Machine Learning Operations ([MLOps](https://ml-ops.org/)), we want continuous delivery and testing of your Model and its operations. MLOps can be automated using **[GitHub Actions](https://docs.github.com/en/actions)** that is a CI/CD platform, and it is way more fast when you use GPUs.
-## What are MLOps and its uses?
+## What are MLOps and it's uses?
 MLOps stands for Machine Learning Operations. It establishes a smooth connection from the creation of the ML models to the production. MLOps continues by concentrating on the upkeep and overall monitoring of Machine Learning Engineering. MLOps collaborate on every task carried out by data scientists, DevOps engineers, and ML engineers. MLOps are used to reduce friction with devops and IT, allows better cooperation with data teams, makes ML pipelines reproducible, and speeds up release velocity.
 
 ## Why MLOps are better on GPUs?
@@ -78,7 +78,7 @@ Using Cirun we created a machine on AWS with NVIDIA T4 GPU and perform our MLOps
 
 ## Example workflow
 
-Here we are doing a comparison between MLOps using CPU and GPU. In this workflow we created jobs for two runners, one is for self-hosted using GPU and another one is for GitHub action runner using CPU. You can also reproduce this workflow for single runner by removing one **Runner Configuration** and **Matrix configuration**. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
+Here we are doing a comparison between MLOps using CPU and GPU. In this workflow we created jobs for two runners, one is for self-hosted using GPU and another one is for GitHub action runner using CPU. we can also reproduce this workflow for single runner by removing one **Runner Configuration** and **Matrix configuration**. To review the latest version of this file in the [GitHub](https://github.com/vishal9629/MLops_with_Cirun/tree/new-example-2/.github/workflows) repository.
 
 ##### Also you can directly copy single workflow yml. [MLOps using GPUs yml](https://github.com/vishal9629/MLops_with_Cirun/blob/new-example-2/.github/workflows/MLOps-gpu.yml)
 
