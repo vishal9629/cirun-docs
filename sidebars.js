@@ -52,7 +52,7 @@ module.exports = {
       label: "Examples",
       link: { type: "doc", id: "examples/index" },
       items: [
-        "examples/actions_with_gpu"
+        "examples/actions-with-gpu"
       ],
     },
     {

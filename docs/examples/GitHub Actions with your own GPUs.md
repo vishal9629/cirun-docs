@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-id: actions_with_gpu
+id: actions-with-gpu
 description: Cirun Documentation - Cloud Authentication.
 image: "https://cirun.io/cirun-summary-image-v4.png"
 keywords: [Cirun, Gcp, digitalocean, azure, Amazon web services, open stack, Authentication, Oracle]
